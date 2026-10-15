@@ -1,9 +1,30 @@
+function testOperatorSymbol(c) {
+  return c === "+" || c === "-" || c === "*" || c === "/" || c === "=" || c === "&" || c === "|" || c === "<" || c === ">" || c === "~" || c === "^" || c === "!" || c === "?" || c === ":"
+}
+
+// testComment(term string) -> boolean
+function testComment(term) {
+  return (term[0] === "/" && term[1] === "/")
+    || (term[0] === "/" && term[1] === "*")
+}
+
+// testOperator(term string) -> boolean
+function testOperator(term) {
+  return term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "+=" || term == "++" || term == "-=" || term == "*=" || term == "/=" || term == "**=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<" || term == "&=" || term == "|=" || term == "^="
+}
+
 // pushWordTerm(parsedElements Array<object|string>, term string) -> ()
 function pushWordTerm(parsedElements, term) {
-  if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
+  if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
     parsedElements.push(Span({ class: "global-object" }, term))
+  } else if (term == "undefined") {
+    parsedElements.push(Span({ class: "undefined" }, term))
+  } else if (term == "null") {
+    parsedElements.push(Span({ class: "null" }, term))
   } else if (term == "true" || term == "false") {
     parsedElements.push(Span({ class: "boolean" }, term))
+  } else if (term == "NaN") {
+    parsedElements.push(Span({ class: "not-a-number" }, term))
   } else {
     parsedElements.push(term)
   }
@@ -14,102 +35,108 @@ function parseJavaScript(text) {
 
   let index = 0
   let term = ""
+  let isSingleLineComment = false
+  let isMultiLineComment = false
+  let isNumber = false
+  let isOperator = false
   let isStringSingleQuote = false
   let isStringDoubleQuote = false
-  let isNumber = false
   let isTemplateLiteral = false
+  let isTernaryOperator = false
 
-  // TODO `` string template
-  // TODO [] array
-  // TODO for await, for, await, of
-
-  /*
-const DiskSortedHashTable = require('presidium-db/DiskSortedHashTable')
-
-const sortedHt = new DiskSortedHashTable({
-  storageFilepath: '/path/to/sortedHt-storage-file',
-  headerFilepath: '/path/to/sortedHt-header-file',
-  initialLength: 1024,
-})
-await sortedHt.init()
-
-await sortedHt.set('first-key', 'first-value', 1)
-await sortedHt.set('second-key', 'second-value', 2)
-await sortedHt.set('third-key', 'third-value', 3)
-
-for await (const value of sortedHt.forwardIterator()) {
-  console.log(value) // first-value
-                     // second-value
-                     // third-value
-}
-
-for await (const value of sortedHt.reverseIterator()) {
-  console.log(value) // third-value
-                     // second-value
-                     // first-value
-}
-  */
+  // TODO function call with space
 
   while (index < text.length) {
     let c = text[index]
 
     /*
-    if (parsedElements.length > 9) {
+    if (parsedElements.length > 5) {
       console.log(parsedElements)
       console.log({ term, c })
-      throw new Error("x")
-    }
+      throw new Error("x") }
     */
 
-    if (isNumber && !/\d/.test(c)) {
+    if (isSingleLineComment && c === "\n") {
+      isSingleLineComment = false
+      parsedElements.push(Span({ class: "comment" }, term))
+      term = ""
+    } else if (isMultiLineComment && term[term.length - 1] === "*" && c === "/") {
+      isMultiLineComment = false
+      term += c
+      index += 1
+      c = text[index]
+      parsedElements.push(Span({ class: "comment" }, term))
+      term = ""
+    } else if (isNumber && !/[\dn]/.test(c)) {
       isNumber = false
-      parsedElements.push(Span({ class: "number" }, term))
+      if (term[term.length - 1] === "n") {
+        parsedElements.push(Span({ class: "bigint" }, term))
+      } else if (term.includes("n")) {
+        parsedElements.push(term)
+      } else {
+        parsedElements.push(Span({ class: "number" }, term))
+      }
+      term = ""
+    } else if (isOperator && !testOperatorSymbol(c)) {
+      isOperator = false
+      if (term == "=>") {
+        parsedElements.push(Span({ class: "arrow-function-operator" }, term))
+      } else if (term == "?") {
+        isTernaryOperator = true
+        parsedElements.push(Span({ class: "operator" }, term))
+      } else if (term == ":") {
+        if (isTernaryOperator) {
+          parsedElements.push(Span({ class: "operator" }, term))
+          isTernaryOperator = false
+        } else {
+          parsedElements.push(Span({ class: "object-colon" }, term))
+        }
+      } else {
+        parsedElements.push(Span({ class: "operator" }, term))
+      }
+      term = ""
+    } else if (isStringSingleQuote && c === "'") {
+      isStringSingleQuote = false
+      term += c
+      index += 1
+      c = text[index]
+      parsedElements.push(Span({ class: "string" }, term))
+      term = ""
+    } else if (isStringDoubleQuote && c === "\"") {
+      isStringDoubleQuote = false
+      term += c
+      index += 1
+      c = text[index]
+      parsedElements.push(Span({ class: "string" }, term))
+      term = ""
+    } else if (isTemplateLiteral && c === "`") {
+      isTemplateLiteral = false
+      term += c
+      index += 1
+      c = text[index]
+      parsedElements.push(Span({ class: "template-literal" }, term))
       term = ""
     }
 
-    if (term.length == 0 && /\d/.test(c)) {
-      isNumber = true
+    if (isSingleLineComment) {
       term += c
       index += 1
-    } else if (isStringSingleQuote && c !== "'") {
+    } else if (isMultiLineComment) {
       term += c
       index += 1
-    } else if (c === "'") {
-      if (isStringSingleQuote) {
-        isStringSingleQuote = false
-        term += c
-        parsedElements.push(Span({ class: "string" }, term))
-        term = ""
-        index += 1
-      } else {
-        isStringSingleQuote = true
-        if (term.length > 0) {
-          throw new Error(term)
-        }
-        term += c
-        index += 1
-      }
-    } else if (isStringDoubleQuote && c !== "\"") {
+    } else if (isNumber) {
       term += c
       index += 1
-    } else if (c === "\"") {
-      if (isStringDoubleQuote) {
-        isStringDoubleQuote = false
-        term += c
-        parsedElements.push(Span({ class: "string" }, term))
-        term = ""
-        index += 1
-      } else {
-        isStringDoubleQuote = true
-        if (term.length > 0) {
-          pushWordTerm(parsedElements, term)
-          term = ""
-        }
-        term += c
-        index += 1
-      }
-    }
-    else if (isTemplateLiteral && c !== "`") {
+    } else if (isOperator) {
+      term += c
+      index += 1
+    } else if (isStringSingleQuote) {
+      term += c
+      index += 1
+    } else if (isStringDoubleQuote) {
+      term += c
+      index += 1
+    } else if (isTemplateLiteral) {
       if (c === "$") {
         let templateVariable = c
         index += 1
@@ -133,66 +160,61 @@ for await (const value of sortedHt.reverseIterator()) {
         term += c
         index += 1
       }
-    }
-    else if (c === "`") {
-      if (isTemplateLiteral) {
-        isTemplateLiteral = false
-        term += c
-        parsedElements.push(Span({ class: "template-literal" }, term))
-        term = ""
-        index += 1
-      } else {
-        isTemplateLiteral = true
-        if (term.length > 0) {
-          pushWordTerm(parsedElements, term)
-          term = ""
-        }
-        term += c
-        index += 1
+    } else if (c === "/" && text[index + 1] === "/") {
+      isSingleLineComment = true
+      term += c
+      index += 1
+    } else if (c === "/" && text[index + 1] === "*") {
+      isMultiLineComment = true
+      term += c
+      index += 1
+    } else if (term.length == 0 && /\d/.test(c)) {
+      isNumber = true
+      term += c
+      index += 1
+    } else if (term.length == 0 && testOperatorSymbol(c)) {
+      isOperator = true
+      term += c
+      index += 1
+    } else if (testOperatorSymbol(c)) {
+      if (term.length > 0) {
+        pushWordTerm(parsedElements, term)
       }
-    }
-    else if (c === " " || c === "\n") {
+      isOperator = true
+      term = c
+      index += 1
+    } else if (c === ":") {
+      parsedElements.push(term)
+      if (isTernaryOperator) {
+        parsedElements.push(Span({ class: "operator" }, term))
+        isTernaryOperator = false
+      } else {
+        parsedElements.push(Span({ class: "object-colon" }, c))
+      }
+      term = ""
+      index += 1
+    } else if (term.length == 0 && c === "'") {
+      isStringSingleQuote = true
+      term += c
+      index += 1
+    } else if (term.length == 0 && c === "\"") {
+      isStringDoubleQuote = true
+      term += c
+      index += 1
+    } else if (term.length == 0 && c === "`") {
+      isTemplateLiteral = true
+      term += c
+      index += 1
+    } else if (c === " " || c === "\n") {
       if (term.length == 0) {
         parsedElements.push(c)
-        index += 1
-      } else if (term == "//") {
-        while (c !== "\n") {
-          term += c
-          index += 1
-          c = text[index]
-        }
-        parsedElements.push(Span({ class: "comment" }, term))
-        parsedElements.push(c)
-        term = ""
-        index += 1
-      } else if (term == "/*") {
-        let c0 = c
-        term += c
-        index += 1
-        c = text[index]
-        while (c0 !== "*" && c !== "/") {
-          c0 = c
-          term += c
-          index += 1
-          c = text[index]
-        }
-        term += c
-        parsedElements.push(Span({ class: "comment" }, term))
-        term = ""
         index += 1
       } else if (term == "const" || term == "let" || term == "var") {
         parsedElements.push(Span({ class: "variable-declaration-keyword" }, term))
         parsedElements.push(c)
         term = ""
         index += 1
-      }
-      else if (term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<") {
-        parsedElements.push(Span({ class: "operator" }, term))
-        parsedElements.push(c)
-        term = ""
-        index += 1
-      }
-      else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of") {
+      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of") {
         parsedElements.push(Span({ class: "keyword" }, term))
         parsedElements.push(c)
         term = ""
@@ -234,17 +256,11 @@ for await (const value of sortedHt.reverseIterator()) {
         parsedElements.push(Span({ class: "spread-operator" }, term))
       }
       term = ""
-    } else if (c === ":") {
-      if (term.length > 0) {
-        parsedElements.push(Span({ class: "object-key" }, term))
-      }
-      parsedElements.push(c)
-      term = ""
-      index += 1
-    } else if (c === "(") {
+    }
+    else if (c === "(") {
       if (term === "") {
         // skip
-      } else if (term == "require") {
+      } else if (term == "require" || term == "isNaN") {
         parsedElements.push(Span({ class: "global-object" }, term))
       } else if (term == "while" || term == "for") {
         parsedElements.push(Span({ class: "keyword" }, term))

@@ -115,7 +115,7 @@ const HTTP = require('presidium/HTTP')
 
 const server = HTTP.Server((request, response) => {
   response.writeHead(200, { 'Content-Type': 'application/json' })
-  response.write(JSON.stringify({ greeting: 'Hello World' }))
+  response.write(JSON.stringify({ greeting:'Hello World', greeting2 : "Hello World 2" }))
   response.end()
 })
 
@@ -161,7 +161,7 @@ http.get('/')
     'response',
     '<span class="closing-parentheses">)</span>',
     ' ',
-    '=>',
+    '<span class="arrow-function-operator">=></span>',
     ' ',
     '{',
     '\n',
@@ -177,7 +177,7 @@ http.get('/')
     '{',
     ' ',
     `<span class="string">'Content-Type'</span>`,
-    ':',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'application/json'</span>`,
     ' ',
@@ -196,10 +196,16 @@ http.get('/')
     '<span class="opening-parentheses">(</span>',
     '{',
     ' ',
-    '<span class="object-key">greeting</span>',
-    ':',
-    ' ',
+    'greeting',
+    '<span class="object-colon">:</span>',
     `<span class="string">'Hello World'</span>`,
+    ',',
+    ' ',
+    'greeting2',
+    ' ',
+    '<span class="object-colon">:</span>',
+    ' ',
+    '<span class="string">"Hello World 2"</span>',
     ' ',
     '}',
     '<span class="closing-parentheses">)</span>',
@@ -253,7 +259,7 @@ http.get('/')
     '<span class="opening-parentheses">(</span>',
     'response',
     ' ',
-    '=>',
+    '<span class="arrow-function-operator">=></span>',
     ' ',
     'response',
     '<span class="property-accessor">.</span>',
@@ -275,7 +281,7 @@ http.get('/')
     `<span class="comment">// { greeting: 'Hello World' }</span>`,
     '\n',
     ' ',
-    ' '
+    ' ',
   ])
 
 }
@@ -288,7 +294,6 @@ const AwsCredentials = require('presidium/AwsCredentials')
 async function fn() {
 }
 async () => {}
-
 const awsCreds = await AwsCredentials('default')
 awsCreds.region = 'us-east-1'
 
@@ -347,11 +352,10 @@ await myBucket.putObject('some-key', '{"hello":"world"}', {
     '<span class="opening-parentheses">(</span>',
     '<span class="closing-parentheses">)</span>',
     ' ',
-    '=>',
+    '<span class="arrow-function-operator">=></span>',
     ' ',
     '{',
     '}',
-    '\n',
     '\n',
     '<span class="variable-declaration-keyword">const</span>',
     ' ',
@@ -389,8 +393,8 @@ await myBucket.putObject('some-key', '{"hello":"world"}', {
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">name</span>',
-    ':',
+    'name',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'my-bucket'</span>`,
     ',',
@@ -427,8 +431,8 @@ await myBucket.putObject('some-key', '{"hello":"world"}', {
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">ContentType</span>',
-    ':',
+    'ContentType',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'application/json'</span>`,
     ',',
@@ -507,21 +511,21 @@ const ts = \`123 \${s} 456\`
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">image</span>',
-    ':',
+    'image',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'node:15-alpine'</span>`,
     ',',
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">env</span>',
-    ':',
+    'env',
+    '<span class="object-colon">:</span>',
     ' ',
     '{',
     ' ',
-    '<span class="object-key">FOO</span>',
-    ':',
+    'FOO',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'Example'</span>`,
     ' ',
@@ -530,8 +534,8 @@ const ts = \`123 \${s} 456\`
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">cmd</span>',
-    ':',
+    'cmd',
+    '<span class="object-colon">:</span>',
     ' ',
     '[',
     `<span class="string">'node'</span>`,
@@ -546,8 +550,8 @@ const ts = \`123 \${s} 456\`
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">rm</span>',
-    ':',
+    'rm',
+    '<span class="object-colon">:</span>',
     ' ',
     '<span class="boolean">true</span>',
     ',',
@@ -588,7 +592,7 @@ const ts = \`123 \${s} 456\`
     '<span class="template-literal"> 456`</span>',
     '\n',
     ' ',
-    ' '
+    ' ',
   ])
 
 }
@@ -651,24 +655,24 @@ for await (const value of sortedHt.reverseIterator()) {
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">storageFilepath</span>',
-    ':',
+    'storageFilepath',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'/path/to/sortedHt-storage-file'</span>`,
     ',',
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">headerFilepath</span>',
-    ':',
+    'headerFilepath',
+    '<span class="object-colon">:</span>',
     ' ',
     `<span class="string">'/path/to/sortedHt-header-file'</span>`,
     ',',
     '\n',
     ' ',
     ' ',
-    '<span class="object-key">initialLength</span>',
-    ':',
+    'initialLength',
+    '<span class="object-colon">:</span>',
     ' ',
     '<span class="number">1024</span>',
     ',',
@@ -901,25 +905,25 @@ async function test6() {
 true
 [true, false, true, process, require]
 let i = 0
-while (false) {
+while ( false ) {
 }
 while(false){
 }
-while (true) {
+while ( true ) {
 }
 while(true){
 }
-for (let j = 0; j < 5; j++) {
+for ( let j = 0; j < 5; j++ ) {
 }
 for(let j = 0; j < 5; j++){
 }
 var obj = {}
-for (const key in obj) {
+for ( const key in obj ) {
 }
 for(const key in obj){
 }
 let arr = []
-for (const key of arr) {
+for ( const key of arr ) {
 }
 for(const key of arr){
 }
@@ -958,7 +962,9 @@ for(const key of arr){
     '<span class="keyword">while</span>',
     ' ',
     '<span class="opening-parentheses">(</span>',
+    ' ',
     '<span class="boolean">false</span>',
+    ' ',
     '<span class="closing-parentheses">)</span>',
     ' ',
     '{',
@@ -976,7 +982,9 @@ for(const key of arr){
     '<span class="keyword">while</span>',
     ' ',
     '<span class="opening-parentheses">(</span>',
+    ' ',
     '<span class="boolean">true</span>',
+    ' ',
     '<span class="closing-parentheses">)</span>',
     ' ',
     '{',
@@ -994,6 +1002,7 @@ for(const key of arr){
     '<span class="keyword">for</span>',
     ' ',
     '<span class="opening-parentheses">(</span>',
+    ' ',
     '<span class="variable-declaration-keyword">let</span>',
     ' ',
     'j',
@@ -1010,7 +1019,9 @@ for(const key of arr){
     '<span class="number">5</span>',
     ';',
     ' ',
-    'j++',
+    'j',
+    '<span class="operator">++</span>',
+    ' ',
     '<span class="closing-parentheses">)</span>',
     ' ',
     '{',
@@ -1035,7 +1046,8 @@ for(const key of arr){
     '<span class="number">5</span>',
     ';',
     ' ',
-    'j++',
+    'j',
+    '<span class="operator">++</span>',
     '<span class="closing-parentheses">)</span>',
     '{',
     '\n',
@@ -1053,6 +1065,7 @@ for(const key of arr){
     '<span class="keyword">for</span>',
     ' ',
     '<span class="opening-parentheses">(</span>',
+    ' ',
     '<span class="variable-declaration-keyword">const</span>',
     ' ',
     'key',
@@ -1060,6 +1073,7 @@ for(const key of arr){
     'in',
     ' ',
     'obj',
+    ' ',
     '<span class="closing-parentheses">)</span>',
     ' ',
     '{',
@@ -1092,6 +1106,7 @@ for(const key of arr){
     '<span class="keyword">for</span>',
     ' ',
     '<span class="opening-parentheses">(</span>',
+    ' ',
     '<span class="variable-declaration-keyword">const</span>',
     ' ',
     'key',
@@ -1099,6 +1114,7 @@ for(const key of arr){
     '<span class="keyword">of</span>',
     ' ',
     'arr',
+    ' ',
     '<span class="closing-parentheses">)</span>',
     ' ',
     '{',
@@ -1120,7 +1136,7 @@ for(const key of arr){
     '}',
     '\n',
     ' ',
-    ' '
+    ' ',
   ])
 
 }
@@ -1128,17 +1144,397 @@ for(const key of arr){
 async function test7() {
   const code = `
 1 + 1
+1+1
+1 - 0
+1-0
+3 * 2
+3*2
 9 / 3
-3 ** 4
+9/3
+2 ** 5
+2**5
+a = 1
+a=1
+a += 1
+a+=1
+a -= 1
+a-=1
+a *= 2
+a*=2
+a /= 2
+a/=2
+a **= 2
+a**=2
+a == null
+a==null
+a === undefined
+a===undefined
+x != null
+x!=null
+x !== undefined
+x!==undefined
+a >= 1
+a>=1
+a > 0
+a>0
+a < 10
+a<10
+a <= 9
+a<=9
+isNaN(NaN)
+isNaN ( NaN )
+true ? 1 : 0
+true?1:0
+1 && 10
+1&&10
+0 || 2
+0||2
+null ?? 5
+null??5
+5 & 3
+5&3
+5 | 3
+5|3
+0 ^ 0
+0^0
+~ 0
+~0
+2 >> 0
+2 << 4
+a &= 3
+a |= 3
+a ^= 3
+2n
+1000n
   `
 
   const parsedElements = parseJavaScript(code)
 
-  const util = require("util")
-  console.log(util.inspect(parsedElements, { maxArrayLength: Infinity }))
-
-  // assert.deepEqual(parsedElements, [
-  // ])
+  assert.deepEqual(parsedElements, [
+    '\n',
+    '<span class="number">1</span>',
+    ' ',
+    '<span class="operator">+</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    '<span class="number">1</span>',
+    '<span class="operator">+</span>',
+    '<span class="number">1</span>',
+    '\n',
+    '<span class="number">1</span>',
+    ' ',
+    '<span class="operator">-</span>',
+    ' ',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="number">1</span>',
+    '<span class="operator">-</span>',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="number">3</span>',
+    ' ',
+    '<span class="operator">*</span>',
+    ' ',
+    '<span class="number">2</span>',
+    '\n',
+    '<span class="number">3</span>',
+    '<span class="operator">*</span>',
+    '<span class="number">2</span>',
+    '\n',
+    '<span class="number">9</span>',
+    ' ',
+    '<span class="operator">/</span>',
+    ' ',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="number">9</span>',
+    '<span class="operator">/</span>',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="number">2</span>',
+    ' ',
+    '<span class="operator">**</span>',
+    ' ',
+    '<span class="number">5</span>',
+    '\n',
+    '<span class="number">2</span>',
+    '<span class="operator">**</span>',
+    '<span class="number">5</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    '<span class="operator">=</span>',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">+=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    '<span class="operator">+=</span>',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">-=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    '<span class="operator">-=</span>',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">*=</span>',
+    ' ',
+    '<span class="number">2</span>',
+    '\n',
+    'a',
+    '<span class="operator">*=</span>',
+    '<span class="number">2</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">/=</span>',
+    ' ',
+    '<span class="number">2</span>',
+    '\n',
+    'a',
+    '<span class="operator">/=</span>',
+    '<span class="number">2</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">**=</span>',
+    ' ',
+    '<span class="number">2</span>',
+    '\n',
+    'a',
+    '<span class="operator">**=</span>',
+    '<span class="number">2</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">==</span>',
+    ' ',
+    '<span class="null">null</span>',
+    '\n',
+    'a',
+    '<span class="operator">==</span>',
+    '<span class="null">null</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">===</span>',
+    ' ',
+    '<span class="undefined">undefined</span>',
+    '\n',
+    'a',
+    '<span class="operator">===</span>',
+    '<span class="undefined">undefined</span>',
+    '\n',
+    'x',
+    ' ',
+    '<span class="operator">!=</span>',
+    ' ',
+    '<span class="null">null</span>',
+    '\n',
+    'x',
+    '<span class="operator">!=</span>',
+    '<span class="null">null</span>',
+    '\n',
+    'x',
+    ' ',
+    '<span class="operator">!==</span>',
+    ' ',
+    '<span class="undefined">undefined</span>',
+    '\n',
+    'x',
+    '<span class="operator">!==</span>',
+    '<span class="undefined">undefined</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">>=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    '<span class="operator">>=</span>',
+    '<span class="number">1</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">></span>',
+    ' ',
+    '<span class="number">0</span>',
+    '\n',
+    'a',
+    '<span class="operator">></span>',
+    '<span class="number">0</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator"><</span>',
+    ' ',
+    '<span class="number">10</span>',
+    '\n',
+    'a',
+    '<span class="operator"><</span>',
+    '<span class="number">10</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator"><=</span>',
+    ' ',
+    '<span class="number">9</span>',
+    '\n',
+    'a',
+    '<span class="operator"><=</span>',
+    '<span class="number">9</span>',
+    '\n',
+    '<span class="global-object">isNaN</span>',
+    '<span class="opening-parentheses">(</span>',
+    '<span class="not-a-number">NaN</span>',
+    '<span class="closing-parentheses">)</span>',
+    '\n',
+    '<span class="global-object">isNaN</span>',
+    ' ',
+    '<span class="opening-parentheses">(</span>',
+    ' ',
+    '<span class="not-a-number">NaN</span>',
+    ' ',
+    '<span class="closing-parentheses">)</span>',
+    '\n',
+    '<span class="boolean">true</span>',
+    ' ',
+    '<span class="operator">?</span>',
+    ' ',
+    '<span class="number">1</span>',
+    ' ',
+    '<span class="operator">:</span>',
+    ' ',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="boolean">true</span>',
+    '<span class="operator">?</span>',
+    '<span class="number">1</span>',
+    '<span class="operator">:</span>',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="number">1</span>',
+    ' ',
+    '<span class="operator">&&</span>',
+    ' ',
+    '<span class="number">10</span>',
+    '\n',
+    '<span class="number">1</span>',
+    '<span class="operator">&&</span>',
+    '<span class="number">10</span>',
+    '\n',
+    '<span class="number">0</span>',
+    ' ',
+    '<span class="operator">||</span>',
+    ' ',
+    '<span class="number">2</span>',
+    '\n',
+    '<span class="number">0</span>',
+    '<span class="operator">||</span>',
+    '<span class="number">2</span>',
+    '\n',
+    '<span class="null">null</span>',
+    ' ',
+    '<span class="operator">??</span>',
+    ' ',
+    '<span class="number">5</span>',
+    '\n',
+    '<span class="null">null</span>',
+    '<span class="operator">??</span>',
+    '<span class="number">5</span>',
+    '\n',
+    '<span class="number">5</span>',
+    ' ',
+    '<span class="operator">&</span>',
+    ' ',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="number">5</span>',
+    '<span class="operator">&</span>',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="number">5</span>',
+    ' ',
+    '<span class="operator">|</span>',
+    ' ',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="number">5</span>',
+    '<span class="operator">|</span>',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="number">0</span>',
+    ' ',
+    '<span class="operator">^</span>',
+    ' ',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="number">0</span>',
+    '<span class="operator">^</span>',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="operator">~</span>',
+    ' ',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="operator">~</span>',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="number">2</span>',
+    ' ',
+    '<span class="operator">>></span>',
+    ' ',
+    '<span class="number">0</span>',
+    '\n',
+    '<span class="number">2</span>',
+    ' ',
+    '<span class="operator"><<</span>',
+    ' ',
+    '<span class="number">4</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">&=</span>',
+    ' ',
+    '<span class="number">3</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">|=</span>',
+    ' ',
+    '<span class="number">3</span>',
+    '\n',
+    'a',
+    ' ',
+    '<span class="operator">^=</span>',
+    ' ',
+    '<span class="number">3</span>',
+    '\n',
+    '<span class="bigint">2n</span>',
+    '\n',
+    '<span class="bigint">1000n</span>',
+    '\n',
+    ' ',
+    ' ',
+  ])
 
 }
 
