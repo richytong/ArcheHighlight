@@ -15,6 +15,7 @@
   },
   "files": [
     "ArcheHighlight.js",
+    "ArcheHighlight.es.js",
     "ArcheHighlight.mjs",
     "package.json"
   ],

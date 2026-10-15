@@ -1,3 +1,7 @@
+/**
+ * ArcheHighlight may be freely distributed under the CFOSS license.
+ */
+
 function testOperatorSymbol(c) {
   return c === "+" || c === "-" || c === "*" || c === "/" || c === "=" || c === "&" || c === "|" || c === "<" || c === ">" || c === "~" || c === "^" || c === "!" || c === "?" || c === ":"
 }
@@ -54,17 +58,8 @@ function parseJavaScript(text) {
   let isTernaryOperator = false
   let isFunctionDeclaration = false
 
-  // TODO function call with space
-
   while (index < text.length) {
     let c = text[index]
-
-    /*
-    if (parsedElements.length > 5) {
-      console.log(parsedElements)
-      console.log({ term, c })
-      throw new Error("x") }
-    */
 
     if (isSingleLineComment && c === "\n") {
       isSingleLineComment = false
@@ -344,4 +339,8 @@ function parseJavaScript(text) {
   return parsedElements
 }
 
-module.exports = parseJavaScript
+const ArcheHighlight = {
+  parseJavaScript,
+}
+
+export default ArcheHighlight
