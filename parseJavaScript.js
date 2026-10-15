@@ -1,6 +1,6 @@
 // pushWordTerm(parsedElements Array<object|string>, term string) -> ()
 function pushWordTerm(parsedElements, term) {
-  if (term == "process" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
+  if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
     parsedElements.push(Span({ class: "global-object" }, term))
   } else if (term == "true" || term == "false") {
     parsedElements.push(Span({ class: "boolean" }, term))
@@ -245,7 +245,9 @@ for await (const value of sortedHt.reverseIterator()) {
       if (term === "") {
         // skip
       } else if (term == "require") {
-        parsedElements.push(Span({ class: "require-keyword" }, term))
+        parsedElements.push(Span({ class: "global-object" }, term))
+      } else if (term == "while" || term == "for") {
+        parsedElements.push(Span({ class: "keyword" }, term))
       } else {
         parsedElements.push(Span({ class: "function-name" }, term))
       }
