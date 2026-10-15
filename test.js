@@ -11,7 +11,7 @@ for (const elementName in ReactElement) {
   window[elementName] = ReactElement[elementName]
 }
 
-const parseJavaScript = require("./parseJavaScript")
+const ArcheHighlight = require("./ArcheHighlight")
 
 async function test1() {
   const code = `
@@ -29,7 +29,7 @@ const WebSocket = require('presidium/WebSocket')
 const Readable = require('presidium/Readable')
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -128,7 +128,7 @@ http.get('/')
   .then(console.log) // { greeting: 'Hello World' }
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -308,7 +308,7 @@ await myBucket.putObject('some-key', '{"hello":"world"}', {
 })
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -466,7 +466,7 @@ const s = "test"
 const ts = \`123 \${s} 456\`
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -625,7 +625,7 @@ for await (const value of sortedHt.reverseIterator()) {
 }
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -929,7 +929,7 @@ for(const key of arr){
 }
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -1208,7 +1208,7 @@ a ^= 3
 1000n
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
@@ -1551,7 +1551,7 @@ f
 ()
   `
 
-  const parsedElements = parseJavaScript(code)
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
 
   assert.deepEqual(parsedElements, [
     '\n',
