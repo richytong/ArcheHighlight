@@ -1,0 +1,4 @@
+// str string -> kebabized string
+const kebabize = str => str.replace(/[A-Z]+(?![a-z])|[A-Z]/g, ($, ofs) => (ofs ? "-" : "") + $.toLowerCase())
+
+module.exports = kebabize

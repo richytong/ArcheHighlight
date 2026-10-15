@@ -1,0 +1,33 @@
+{
+  "name": "arche-highlight",
+  "version": "0.0.0",
+  "description": "Arche Highlight",
+  "author": "Richard Tong",
+  "license": "CFOSS",
+  "main": "ArcheHighlight.js",
+  "repository": {
+    "type": "git",
+    "url": "github:richytong/arche-highlight"
+  },
+  "homepage": "github:richytong/arche-highlight",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "files": [
+    "ArcheHighlight.js",
+    "ArcheHighlight.mjs",
+    "package.json"
+  ],
+  "keywords": [
+    "syntax",
+    "highlighting",
+    "JavaScript",
+    "Arche"
+  ],
+  "type": "commonjs",
+  "devDependencies": {
+    "arche": "^1.1.8",
+    "nyc": "^18.0.0",
+    "rubico": "^2.19.5"
+  }
+}
