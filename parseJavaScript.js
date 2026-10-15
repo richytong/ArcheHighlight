@@ -13,8 +13,8 @@ function testOperator(term) {
   return term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "+=" || term == "++" || term == "-=" || term == "*=" || term == "/=" || term == "**=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<" || term == "&=" || term == "|=" || term == "^="
 }
 
-// pushWordTerm(parsedElements Array<object|string>, term string) -> ()
-function pushWordTerm(parsedElements, term) {
+// pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
+function pushWordTerm(parsedElements, term, index, text) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
     parsedElements.push(Span({ class: "global-object" }, term))
   } else if (term == "undefined") {
@@ -26,7 +26,16 @@ function pushWordTerm(parsedElements, term) {
   } else if (term == "NaN") {
     parsedElements.push(Span({ class: "not-a-number" }, term))
   } else {
-    parsedElements.push(term)
+    let c = text[index]
+    while (c === " " || c === "\n") {
+      index += 1
+      c = text[index]
+    }
+    if (c === "(") {
+      parsedElements.push(Span({ class: "function-name" }, term))
+    } else {
+      parsedElements.push(term)
+    }
   }
 }
 
@@ -43,6 +52,7 @@ function parseJavaScript(text) {
   let isStringDoubleQuote = false
   let isTemplateLiteral = false
   let isTernaryOperator = false
+  let isFunctionDeclaration = false
 
   // TODO function call with space
 
@@ -178,7 +188,7 @@ function parseJavaScript(text) {
       index += 1
     } else if (testOperatorSymbol(c)) {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       isOperator = true
       term = c
@@ -220,6 +230,7 @@ function parseJavaScript(text) {
         term = ""
         index += 1
       } else if (term == "function") {
+        isFunctionDeclaration = true
         parsedElements.push(Span({ class: "function-keyword" }, term))
         parsedElements.push(c)
         term = ""
@@ -230,9 +241,16 @@ function parseJavaScript(text) {
         term = ""
         index += 1
       }
+      else if (isFunctionDeclaration) {
+        isFunctionDeclaration = false
+        parsedElements.push(Span({ class: "function-name" }, term))
+        parsedElements.push(c)
+        term = ""
+        index += 1
+      }
       else {
         if (term.length > 0) {
-          pushWordTerm(parsedElements, term)
+          pushWordTerm(parsedElements, term, index, text)
         }
         parsedElements.push(c)
         term = ""
@@ -240,7 +258,7 @@ function parseJavaScript(text) {
       }
     } else if (c === ".") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       term = c
       index += 1
@@ -266,48 +284,49 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "keyword" }, term))
       } else {
         parsedElements.push(Span({ class: "function-name" }, term))
+        isFunctionDeclaration = false
       }
       parsedElements.push(Span({ class: "opening-parentheses" }, c))
       term = ""
       index += 1
     } else if (c === ",") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === ")") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       parsedElements.push(Span({ class: "closing-parentheses" }, c))
       term = ""
       index += 1
     } else if (c === "{") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "}") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "[") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "]") {
       if (term.length > 0) {
-        pushWordTerm(parsedElements, term)
+        pushWordTerm(parsedElements, term, index, text)
       }
       parsedElements.push(c)
       term = ""
@@ -319,7 +338,7 @@ function parseJavaScript(text) {
   }
 
   if (term.length > 0) {
-    pushWordTerm(parsedElements, term)
+    pushWordTerm(parsedElements, term, index, text)
   }
 
   return parsedElements

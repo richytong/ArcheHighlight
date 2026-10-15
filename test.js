@@ -1538,6 +1538,63 @@ a ^= 3
 
 }
 
+async function test8() {
+  const code = `
+function f () {
+  const x = 1
+}
+
+f ()
+
+f
+
+()
+  `
+
+  const parsedElements = parseJavaScript(code)
+
+  assert.deepEqual(parsedElements, [
+    '\n',
+    '<span class="function-keyword">function</span>',
+    ' ',
+    '<span class="function-name">f</span>',
+    ' ',
+    '<span class="opening-parentheses">(</span>',
+    '<span class="closing-parentheses">)</span>',
+    ' ',
+    '{',
+    '\n',
+    ' ',
+    ' ',
+    '<span class="variable-declaration-keyword">const</span>',
+    ' ',
+    'x',
+    ' ',
+    '<span class="operator">=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    '}',
+    '\n',
+    '\n',
+    '<span class="function-name">f</span>',
+    ' ',
+    '<span class="opening-parentheses">(</span>',
+    '<span class="closing-parentheses">)</span>',
+    '\n',
+    '\n',
+    '<span class="function-name">f</span>',
+    '\n',
+    '\n',
+    '<span class="opening-parentheses">(</span>',
+    '<span class="closing-parentheses">)</span>',
+    '\n',
+    ' ',
+    ' '
+  ])
+
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1546,5 +1603,6 @@ setImmediate(async () => {
   await test5()
   await test6()
   await test7()
+  await test8()
   console.log("success")
 })
