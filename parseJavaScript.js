@@ -1,3 +1,14 @@
+// pushWordTerm(parsedElements Array<object|string>, term string) -> ()
+function pushWordTerm(parsedElements, term) {
+  if (term == "process" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
+    parsedElements.push(Span({ class: "global-object" }, term))
+  } else if (term == "true" || term == "false") {
+    parsedElements.push(Span({ class: "boolean" }, term))
+  } else {
+    parsedElements.push(term)
+  }
+}
+
 function parseJavaScript(text) {
   const parsedElements = []
 
@@ -91,7 +102,7 @@ for await (const value of sortedHt.reverseIterator()) {
       } else {
         isStringDoubleQuote = true
         if (term.length > 0) {
-          parsedElements.push(term)
+          pushWordTerm(parsedElements, term)
           term = ""
         }
         term += c
@@ -133,7 +144,7 @@ for await (const value of sortedHt.reverseIterator()) {
       } else {
         isTemplateLiteral = true
         if (term.length > 0) {
-          parsedElements.push(term)
+          pushWordTerm(parsedElements, term)
           term = ""
         }
         term += c
@@ -199,11 +210,7 @@ for await (const value of sortedHt.reverseIterator()) {
       }
       else {
         if (term.length > 0) {
-          if (term == "process" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
-            parsedElements.push(Span({ class: "global-object" }, term))
-          } else {
-            parsedElements.push(term)
-          }
+          pushWordTerm(parsedElements, term)
         }
         parsedElements.push(c)
         term = ""
@@ -211,11 +218,7 @@ for await (const value of sortedHt.reverseIterator()) {
       }
     } else if (c === ".") {
       if (term.length > 0) {
-        if (term == "process" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
-          parsedElements.push(Span({ class: "global-object" }, term))
-        } else {
-          parsedElements.push(term)
-        }
+        pushWordTerm(parsedElements, term)
       }
       term = c
       index += 1
@@ -251,42 +254,42 @@ for await (const value of sortedHt.reverseIterator()) {
       index += 1
     } else if (c === ",") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        pushWordTerm(parsedElements, term)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === ")") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        pushWordTerm(parsedElements, term)
       }
       parsedElements.push(Span({ class: "closing-parentheses" }, c))
       term = ""
       index += 1
     } else if (c === "{") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        pushWordTerm(parsedElements, term)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "}") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        pushWordTerm(parsedElements, term)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "[") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        pushWordTerm(parsedElements, term)
       }
       parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "]") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        pushWordTerm(parsedElements, term)
       }
       parsedElements.push(c)
       term = ""
@@ -298,7 +301,7 @@ for await (const value of sortedHt.reverseIterator()) {
   }
 
   if (term.length > 0) {
-    parsedElements.push(term)
+    pushWordTerm(parsedElements, term)
   }
 
   return parsedElements

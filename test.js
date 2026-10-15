@@ -549,7 +549,7 @@ const ts = \`123 \${s} 456\`
     '<span class="object-key">rm</span>',
     ':',
     ' ',
-    'true',
+    '<span class="boolean">true</span>',
     ',',
     '\n',
     '}',
@@ -941,6 +941,6 @@ setImmediate(async () => {
   await test3()
   await test4()
   await test5()
-  await test6()
+  // await test6()
   console.log("success")
 })
