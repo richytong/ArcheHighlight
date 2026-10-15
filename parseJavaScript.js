@@ -175,7 +175,12 @@ for await (const value of sortedHt.reverseIterator()) {
         term = ""
         index += 1
       }
-        // } else if (term == "=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == ) {}
+      else if (term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<") {
+        parsedElements.push(Span({ class: "operator" }, term))
+        parsedElements.push(c)
+        term = ""
+        index += 1
+      }
       else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of") {
         parsedElements.push(Span({ class: "keyword" }, term))
         parsedElements.push(c)
