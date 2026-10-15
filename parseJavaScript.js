@@ -6,6 +6,38 @@ function parseJavaScript(text) {
   let isStringSingleQuote = false
   let isStringDoubleQuote = false
   let isNumber = false
+  let isTemplateLiteral = false
+
+  // TODO `` string template
+  // TODO [] array
+  // TODO for await, for, await, of
+
+  /*
+const DiskSortedHashTable = require('presidium-db/DiskSortedHashTable')
+
+const sortedHt = new DiskSortedHashTable({
+  storageFilepath: '/path/to/sortedHt-storage-file',
+  headerFilepath: '/path/to/sortedHt-header-file',
+  initialLength: 1024,
+})
+await sortedHt.init()
+
+await sortedHt.set('first-key', 'first-value', 1)
+await sortedHt.set('second-key', 'second-value', 2)
+await sortedHt.set('third-key', 'third-value', 3)
+
+for await (const value of sortedHt.forwardIterator()) {
+  console.log(value) // first-value
+                     // second-value
+                     // third-value
+}
+
+for await (const value of sortedHt.reverseIterator()) {
+  console.log(value) // third-value
+                     // second-value
+                     // first-value
+}
+  */
 
   while (index < text.length) {
     let c = text[index]
@@ -65,7 +97,50 @@ function parseJavaScript(text) {
         term += c
         index += 1
       }
-    } else if (c === " " || c === "\n") {
+    }
+    else if (isTemplateLiteral && c !== "`") {
+      if (c === "$") {
+        let templateVariable = c
+        index += 1
+        c = text[index]
+        if (c === "{") {
+          parsedElements.push(Span({ class: "template-literal" }, term))
+          while (c !== "}") {
+            templateVariable += c
+            index += 1
+            c = text[index]
+          }
+          templateVariable += c
+          parsedElements.push(Span({ class: "template-variable" }, templateVariable))
+          term = ""
+          index += 1
+        } else {
+          term += c
+          index += 1
+        }
+      } else {
+        term += c
+        index += 1
+      }
+    }
+    else if (c === "`") {
+      if (isTemplateLiteral) {
+        isTemplateLiteral = false
+        term += c
+        parsedElements.push(Span({ class: "template-literal" }, term))
+        term = ""
+        index += 1
+      } else {
+        isTemplateLiteral = true
+        if (term.length > 0) {
+          parsedElements.push(term)
+          term = ""
+        }
+        term += c
+        index += 1
+      }
+    }
+    else if (c === " " || c === "\n") {
       if (term.length == 0) {
         parsedElements.push(c)
         index += 1
@@ -94,8 +169,20 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "comment" }, term))
         term = ""
         index += 1
-      } else if (term == "const" || term == "let" || term == "var" || term == "import" || term == "new") {
+      } else if (term == "const" || term == "let" || term == "var") {
+        parsedElements.push(Span({ class: "variable-declaration-keyword" }, term))
+        parsedElements.push(c)
+        term = ""
+        index += 1
+      }
+        // } else if (term == "=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == ) {}
+      else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of") {
         parsedElements.push(Span({ class: "keyword" }, term))
+        parsedElements.push(c)
+        term = ""
+        index += 1
+      } else if (term == "function") {
+        parsedElements.push(Span({ class: "function-keyword" }, term))
         parsedElements.push(c)
         term = ""
         index += 1
@@ -105,10 +192,13 @@ function parseJavaScript(text) {
         term = ""
         index += 1
       }
-      // TODO
       else {
         if (term.length > 0) {
-          parsedElements.push(term)
+          if (term == "process" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
+            parsedElements.push(Span({ class: "global-object" }, term))
+          } else {
+            parsedElements.push(term)
+          }
         }
         parsedElements.push(c)
         term = ""
@@ -116,11 +206,26 @@ function parseJavaScript(text) {
       }
     } else if (c === ".") {
       if (term.length > 0) {
-        parsedElements.push(term)
+        if (term == "process" || term == "console" || term == "window" || term == "global" || term == "globalThis") {
+          parsedElements.push(Span({ class: "global-object" }, term))
+        } else {
+          parsedElements.push(term)
+        }
       }
-      parsedElements.push(Span({ class: "property-accessor" }, c))
-      term = ""
+      term = c
       index += 1
+      c = text[index]
+      while (c === ".") {
+        term += c
+        index += 1
+        c = text[index]
+      }
+      if (term.length === 1) {
+        parsedElements.push(Span({ class: "property-accessor" }, term))
+      } else {
+        parsedElements.push(Span({ class: "spread-operator" }, term))
+      }
+      term = ""
     } else if (c === ":") {
       if (term.length > 0) {
         parsedElements.push(Span({ class: "object-key" }, term))
@@ -134,7 +239,7 @@ function parseJavaScript(text) {
       } else if (term == "require") {
         parsedElements.push(Span({ class: "require-keyword" }, term))
       } else {
-        parsedElements.push(Span({ class: "function" }, term))
+        parsedElements.push(Span({ class: "function-name" }, term))
       }
       parsedElements.push(Span({ class: "opening-parentheses" }, c))
       term = ""
@@ -167,8 +272,21 @@ function parseJavaScript(text) {
       parsedElements.push(c)
       term = ""
       index += 1
-    }
-    else {
+    } else if (c === "[") {
+      if (term.length > 0) {
+        parsedElements.push(term)
+      }
+      parsedElements.push(c)
+      term = ""
+      index += 1
+    } else if (c === "]") {
+      if (term.length > 0) {
+        parsedElements.push(term)
+      }
+      parsedElements.push(c)
+      term = ""
+      index += 1
+    } else {
       term += c
       index += 1
     }
