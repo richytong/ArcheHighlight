@@ -1,2 +1,2 @@
 # ArcheHighlight
-Syntax Highlighting for Vanilla Microfrontends
+Syntax highlighting for [vanilla microfrontends](https://arche.gallery/)
