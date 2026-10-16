@@ -73,6 +73,7 @@ Return:
 
 ### JavaScript Classes
 The following JavaScript classes are added to the code as `span` elements of the parsed React Element or HTML:
+  * `shebang-interpreter-directive` - an interpreter directive at the beginning of a script starting with the shebang (`#!`) that instructs the loader of the script to execute the specified interpreter, for example `#!/usr/bin/env node`.
   * `comment` - single line (`//`) or multi-line comments (`/* */`).
   * `number` - numbers, for example `1`, `0`, `2.5`, `-1`, `100`.
   * `string` - strings, for example `"a"`, `'a'`, `"This is a string."`.

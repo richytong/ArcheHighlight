@@ -1741,6 +1741,43 @@ async function test17() {
   ])
 }
 
+async function test18() {
+  const code = `
+#!/usr/bin/env node
+
+const image = \`\${projectName}:\${version}\`
+  `
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '\n',
+    '<span class="shebang-interpreter-directive">#!/usr/bin/env node</span>',
+    '\n',
+    '\n',
+    '<span class="variable-declaration-keyword">const</span>',
+    ' ',
+    'image',
+    ' ',
+    '<span class="operator">=</span>',
+    ' ',
+    '<span class="template-literal">`</span>',
+    '<span class="template-variable">${projectName}</span>',
+    '<span class="template-literal">:</span>',
+    '<span class="template-variable">${version}</span>',
+    '<span class="template-literal">`</span>',
+    '\n',
+    ' ',
+    ' '
+  ])
+}
+
+async function test19() {
+  const code = '#!/usr/bin/env node'
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="shebang-interpreter-directive">#!/usr/bin/env node</span>',
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1762,5 +1799,7 @@ setImmediate(async () => {
   await test15()
   await test16()
   await test17()
+  await test18()
+  await test19()
   console.log("success")
 })
