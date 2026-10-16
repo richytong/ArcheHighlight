@@ -2,11 +2,6 @@
  * ArcheHighlight may be freely distributed under the CFOSS license.
  */
 
-(function (root, ArcheHighlight) {
-  if (typeof module == 'object') (module.exports = ArcheHighlight) // CommonJS
-  else (root.ArcheHighlight = ArcheHighlight) // Browser
-}(typeof globalThis == 'object' ? globalThis : this, (function () { 'use strict'
-
 function testOperatorSymbol(c) {
   return c === "+" || c === "-" || c === "*" || c === "/" || c === "=" || c === "&" || c === "|" || c === "<" || c === ">" || c === "~" || c === "^" || c === "!" || c === "?" || c === ":"
 }
@@ -224,7 +219,7 @@ function parseJavaScript(text) {
         parsedElements.push(c)
         term = ""
         index += 1
-      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of" || term == "from") {
+      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "if" || term == "for" || term == "while" || term == "of" || term == "from") {
         parsedElements.push(Span({ class: "keyword" }, term))
         parsedElements.push(c)
         term = ""
@@ -359,5 +354,8 @@ const ArcheHighlight = {
   parseJavaScript,
 }
 
-return ArcheHighlight
-}())))
+if (typeof module == "object") {
+  module.exports = ArcheHighlight
+} else {
+  globalThis.ArcheHighlight = ArcheHighlight
+}
