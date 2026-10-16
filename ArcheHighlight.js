@@ -224,20 +224,13 @@ function parseJavaScript(text) {
         parsedElements.push(c)
         term = ""
         index += 1
-      } else if (/^\d+$/.test(term)) {
-        parsedElements.push(Span({ class: "number" }, term))
-        parsedElements.push(c)
-        term = ""
-        index += 1
-      }
-      else if (isFunctionDeclaration) {
+      } else if (isFunctionDeclaration) {
         isFunctionDeclaration = false
         parsedElements.push(Span({ class: "function-name" }, term))
         parsedElements.push(c)
         term = ""
         index += 1
-      }
-      else {
+      } else {
         if (term.length > 0) {
           index = pushWordTerm(parsedElements, term, index, text)
           c = text[index]
