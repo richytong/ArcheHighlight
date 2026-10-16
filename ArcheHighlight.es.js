@@ -6,12 +6,6 @@ function testOperatorSymbol(c) {
   return c === "+" || c === "-" || c === "*" || c === "/" || c === "=" || c === "&" || c === "|" || c === "<" || c === ">" || c === "~" || c === "^" || c === "!" || c === "?" || c === ":"
 }
 
-// testComment(term string) -> boolean
-function testComment(term) {
-  return (term[0] === "/" && term[1] === "/")
-    || (term[0] === "/" && term[1] === "*")
-}
-
 // pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
 function pushWordTerm(parsedElements, term, index, text) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
@@ -99,27 +93,31 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "operator" }, term))
       }
       term = ""
-    } else if (isStringSingleQuote && c === "'") {
+    } else if (isStringSingleQuote && c === "'" && term[term.length - 1] !== "\\") {
       isStringSingleQuote = false
       term += c
       index += 1
       c = text[index]
       parsedElements.push(Span({ class: "string" }, term))
       term = ""
-    } else if (isStringDoubleQuote && c === "\"") {
+    } else if (isStringDoubleQuote && c === "\"" && term[term.length - 1] !== "\\") {
       isStringDoubleQuote = false
       term += c
       index += 1
       c = text[index]
       parsedElements.push(Span({ class: "string" }, term))
       term = ""
-    } else if (isTemplateLiteral && c === "`") {
+    } else if (isTemplateLiteral && c === "`" && term[term.length - 1] !== "\\") {
       isTemplateLiteral = false
       term += c
       index += 1
       c = text[index]
       parsedElements.push(Span({ class: "template-literal" }, term))
       term = ""
+    }
+
+    if (index == text.length) {
+      break
     }
 
     if (isSingleLineComment) {
@@ -157,6 +155,7 @@ function parseJavaScript(text) {
           term = ""
           index += 1
         } else {
+          term += templateVariable
           term += c
           index += 1
         }
@@ -187,16 +186,6 @@ function parseJavaScript(text) {
       isOperator = true
       term = c
       index += 1
-    } else if (c === ":") {
-      parsedElements.push(term)
-      if (isTernaryOperator) {
-        parsedElements.push(Span({ class: "operator" }, term))
-        isTernaryOperator = false
-      } else {
-        parsedElements.push(Span({ class: "object-colon" }, c))
-      }
-      term = ""
-      index += 1
     } else if (term.length == 0 && c === "'") {
       isStringSingleQuote = true
       term += c
@@ -218,7 +207,7 @@ function parseJavaScript(text) {
         parsedElements.push(c)
         term = ""
         index += 1
-      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of") {
+      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of" || term == "from") {
         parsedElements.push(Span({ class: "keyword" }, term))
         parsedElements.push(c)
         term = ""
@@ -229,20 +218,13 @@ function parseJavaScript(text) {
         parsedElements.push(c)
         term = ""
         index += 1
-      } else if (/^\d+$/.test(term)) {
-        parsedElements.push(Span({ class: "number" }, term))
-        parsedElements.push(c)
-        term = ""
-        index += 1
-      }
-      else if (isFunctionDeclaration) {
+      } else if (isFunctionDeclaration) {
         isFunctionDeclaration = false
         parsedElements.push(Span({ class: "function-name" }, term))
         parsedElements.push(c)
         term = ""
         index += 1
-      }
-      else {
+      } else {
         if (term.length > 0) {
           index = pushWordTerm(parsedElements, term, index, text)
           c = text[index]
@@ -273,8 +255,7 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "spread-operator" }, term))
       }
       term = ""
-    }
-    else if (c === "(") {
+    } else if (c === "(") {
       if (term === "") {
         // skip
       } else if (term == "require" || term == "isNaN") {
@@ -339,6 +320,14 @@ function parseJavaScript(text) {
   if (term.length > 0) {
     if (isSingleLineComment) {
       parsedElements.push(Span({ class: "comment" }, term))
+    } else if (isNumber) {
+      if (term[term.length - 1] === "n") {
+        parsedElements.push(Span({ class: "bigint" }, term))
+      } else if (term.includes("n")) {
+        parsedElements.push(term)
+      } else {
+        parsedElements.push(Span({ class: "number" }, term))
+      }
     } else {
       pushWordTerm(parsedElements, term, index, text)
     }
