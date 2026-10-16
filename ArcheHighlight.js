@@ -12,12 +12,6 @@ function testOperatorSymbol(c) {
   return c === "+" || c === "-" || c === "*" || c === "/" || c === "=" || c === "&" || c === "|" || c === "<" || c === ">" || c === "~" || c === "^" || c === "!" || c === "?" || c === ":"
 }
 
-// testComment(term string) -> boolean
-function testComment(term) {
-  return (term[0] === "/" && term[1] === "/")
-    || (term[0] === "/" && term[1] === "*")
-}
-
 // pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
 function pushWordTerm(parsedElements, term, index, text) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
@@ -348,6 +342,14 @@ function parseJavaScript(text) {
   if (term.length > 0) {
     if (isSingleLineComment) {
       parsedElements.push(Span({ class: "comment" }, term))
+    } else if (isNumber) {
+      if (term[term.length - 1] === "n") {
+        parsedElements.push(Span({ class: "bigint" }, term))
+      } else if (term.includes("n")) {
+        parsedElements.push(term)
+      } else {
+        parsedElements.push(Span({ class: "number" }, term))
+      }
     } else {
       pushWordTerm(parsedElements, term, index, text)
     }
