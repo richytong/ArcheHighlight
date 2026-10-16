@@ -1692,6 +1692,17 @@ async function test15() {
   ])
 }
 
+async function test16() {
+  const code = 'x[0]'
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    'x',
+    '[',
+    '<span class="number">0</span>',
+    ']',
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1708,5 +1719,6 @@ setImmediate(async () => {
   await test13()
   await test14()
   await test15()
+  await test16()
   console.log("success")
 })
