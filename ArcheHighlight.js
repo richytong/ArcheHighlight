@@ -192,16 +192,6 @@ function parseJavaScript(text) {
       isOperator = true
       term = c
       index += 1
-    } else if (c === ":") {
-      parsedElements.push(term)
-      if (isTernaryOperator) {
-        parsedElements.push(Span({ class: "operator" }, term))
-        isTernaryOperator = false
-      } else {
-        parsedElements.push(Span({ class: "object-colon" }, c))
-      }
-      term = ""
-      index += 1
     } else if (term.length == 0 && c === "'") {
       isStringSingleQuote = true
       term += c
