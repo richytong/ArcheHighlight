@@ -8,8 +8,8 @@ f()
 
 const Root = ReactElement(() => {
   return [
-    H1("Welcome to Vanilla Microfrontends with React."),
-    P("All of the content on this page was added with React."),
+    H1("ArcheHighlight Example"),
+    P("The following code was highlighted with ArcheHighlight and CSS."),
     Div({ class: "code-viewer" }, [
       Code([Pre(ArcheHighlight.parseJavaScript(code))])
     ]),

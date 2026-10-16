@@ -86,3 +86,19 @@ The following JavaScript classes are added to the code as `span` elements of the
   * `null` - the `null` object.
   * `boolean` - booleans `true` and `false`.
   * `not-a-number` - the special numeric value `NaN` that represents an undefined or unrepresentable number, for example `0 / 0`.
+
+## Example
+Please find a runnable example in the `example` directory. You can run the example with a static web server such as [Static Web Server](https://static-web-server.net/).
+```sh
+static-web-server --port=8080 --root=./example -e=false
+```
+
+## License
+ArcheHTML is distributed under the [CFOSS License](https://cloutsworld.com/en-us/legal/license/cfoss).
+
+## Support
+  * minimum Node.js version: 16
+  * minimum Chrome version: 63
+  * minimum Firefox version: 57
+  * minimum Edge version: 79
+  * minimum Safari version: 11.1
