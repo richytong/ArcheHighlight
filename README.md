@@ -68,7 +68,7 @@ The following JavaScript classes are added to the code as `span` elements of the
   * `comment` - single line (`//`) or multi-line comments (`/* */`)
   * `number` - numbers, for example `1`, `0`, `2.5`, `-1`, `100`
   * `string` - strings, for example `"a"`, `'a'`, `"This is a string."`
-  * `template-literal` - template literals, for example `\`This is a${x} ${y} literal\``
+  * `template-literal` - template literals, for example `` `This is a${x} ${y} literal` ``
   * `template-variable` - variables in template literals, for example the `${x}` and `${y}` in the template literal above.
   * `bigint` - JavaScript BigInts, for example `2n`.
   * `variable-declaration-keyword` - `var`, `const`, `let`
