@@ -213,7 +213,7 @@ function parseJavaScript(text) {
         parsedElements.push(c)
         term = ""
         index += 1
-      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of") {
+      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "for" || term == "while" || term == "of" || term == "from") {
         parsedElements.push(Span({ class: "keyword" }, term))
         parsedElements.push(c)
         term = ""

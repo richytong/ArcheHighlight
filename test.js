@@ -1727,6 +1727,20 @@ async function test16() {
   ])
 }
 
+async function test17() {
+  const code = 'import x from "x"'
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="keyword">import</span>',
+    ' ',
+    'x',
+    ' ',
+    '<span class="keyword">from</span>',
+    ' ',
+    '<span class="string">"x"</span>',
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1747,5 +1761,6 @@ setImmediate(async () => {
   await test14()
   await test15()
   await test16()
+  await test17()
   console.log("success")
 })
