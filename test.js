@@ -1875,6 +1875,29 @@ try {
   ])
 }
 
+async function test23() {
+  const code = `
+const x = 1
+export default x
+  `.trim()
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="variable-declaration-keyword">const</span>',
+    ' ',
+    'x',
+    ' ',
+    '<span class="operator">=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    '<span class="keyword">export</span>',
+    ' ',
+    '<span class="keyword">default</span>',
+    ' ',
+    'x',
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1901,5 +1924,6 @@ setImmediate(async () => {
   await test20()
   await test21()
   await test22()
+  await test23()
   console.log("success")
 })
