@@ -18,11 +18,6 @@ function testComment(term) {
     || (term[0] === "/" && term[1] === "*")
 }
 
-// testOperator(term string) -> boolean
-function testOperator(term) {
-  return term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "+=" || term == "++" || term == "-=" || term == "*=" || term == "/=" || term == "**=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<" || term == "&=" || term == "|=" || term == "^="
-}
-
 // pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
 function pushWordTerm(parsedElements, term, index, text) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
