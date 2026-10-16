@@ -5,7 +5,7 @@ Source code: [GitHub](https://github.com/richytong/ArcheHighlight) |
 License: [CFOSS](https://cloutsworld.com/en-us/legal/license/cfoss)
 
 ![Node.js CI](https://github.com/richytong/ArcheHighlight/workflows/Node.js%20CI/badge.svg)
-[![codecov](https://codecov.io/gh/richytong/arche-highlight/branch/master/graph/badge.svg)](https://codecov.io/gh/richytong/arche-highlight)
+[![codecov](https://codecov.io/gh/richytong/arche-highlight/graph/badge.svg?token=1IMQYQOMDM)](https://codecov.io/gh/richytong/arche-highlight)
 [![npm version](https://img.shields.io/npm/v/arche-highlight.svg?style=flat)](https://www.npmjs.com/package/arche-highlight)
 
 
