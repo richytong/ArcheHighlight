@@ -105,27 +105,31 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "operator" }, term))
       }
       term = ""
-    } else if (isStringSingleQuote && c === "'") {
+    } else if (isStringSingleQuote && c === "'" && term[term.length - 1] !== "\\") {
       isStringSingleQuote = false
       term += c
       index += 1
       c = text[index]
       parsedElements.push(Span({ class: "string" }, term))
       term = ""
-    } else if (isStringDoubleQuote && c === "\"") {
+    } else if (isStringDoubleQuote && c === "\"" && term[term.length - 1] !== "\\") {
       isStringDoubleQuote = false
       term += c
       index += 1
       c = text[index]
       parsedElements.push(Span({ class: "string" }, term))
       term = ""
-    } else if (isTemplateLiteral && c === "`") {
+    } else if (isTemplateLiteral && c === "`" && term[term.length - 1] !== "\\") {
       isTemplateLiteral = false
       term += c
       index += 1
       c = text[index]
       parsedElements.push(Span({ class: "template-literal" }, term))
       term = ""
+    }
+
+    if (index == text.length) {
+      break
     }
 
     if (isSingleLineComment) {
@@ -279,8 +283,7 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "spread-operator" }, term))
       }
       term = ""
-    }
-    else if (c === "(") {
+    } else if (c === "(") {
       if (term === "") {
         // skip
       } else if (term == "require" || term == "isNaN") {

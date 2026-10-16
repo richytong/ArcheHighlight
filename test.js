@@ -1603,7 +1603,41 @@ async function test9() {
   assert.deepEqual(parsedElements, [
     '<span class="comment">// new nginx service is deploying to the docker swarm</span>',
   ])
+}
 
+async function test10() {
+  const code = `
+// \\n
+//
+`
+
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+
+  assert.deepEqual(parsedElements, [
+    '\n',
+    '<span class="comment">// \\n</span>',
+    '\n',
+    '<span class="comment">//</span>',
+    '\n',
+  ])
+}
+
+async function test11() {
+  let code = `
+'console.log(\\'Hello World.\\')'
+"console.log(\\"Hello World.\\")"
+  `.trim()
+  code += '\n\`console.log(\\`Hello World.\\`)\`'
+
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+
+  assert.deepEqual(parsedElements, [
+    '<span class="string">\'console.log(\\\'Hello World.\\\')\'</span>',
+    '\n',
+    '<span class="string">\"console.log(\\\"Hello World.\\\")\"</span>',
+    '\n',
+    '<span class="template-literal">\`console.log(\\\`Hello World.\\\`)\`</span>',
+  ])
 }
 
 setImmediate(async () => {
@@ -1616,5 +1650,7 @@ setImmediate(async () => {
   await test7()
   await test8()
   await test9()
+  await test10()
+  await test11()
   console.log("success")
 })
