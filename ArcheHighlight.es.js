@@ -6,6 +6,10 @@ function testOperatorSymbol(c) {
   return c === "+" || c === "-" || c === "*" || c === "/" || c === "=" || c === "&" || c === "|" || c === "<" || c === ">" || c === "~" || c === "^" || c === "!" || c === "?" || c === ":"
 }
 
+function testKeyword(term) {
+  return term == "import" || term == "new" || term == "async" || term == "await" || term == "if" || term == "for" || term == "while" || term == "of" || term == "from" || term == "try" || term == "catch" || term == "export" || term == "default"
+}
+
 // pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
 function pushWordTerm(parsedElements, term, index, text) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
@@ -219,7 +223,7 @@ function parseJavaScript(text) {
         parsedElements.push(c)
         term = ""
         index += 1
-      } else if (term == "import" || term == "new" || term == "async" || term == "await" || term == "if" || term == "for" || term == "while" || term == "of" || term == "from" || term == "try" || term == "catch") {
+      } else if (testKeyword(term)) {
         parsedElements.push(Span({ class: "keyword" }, term))
         parsedElements.push(c)
         term = ""
