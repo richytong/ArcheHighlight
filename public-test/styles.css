@@ -1,0 +1,29 @@
+body {
+  color: #FFF;
+  background-color: #7FB665;
+}
+
+h1 {
+  font-size: 32px;
+}
+
+p {
+  font-size: 14px;
+}
+
+#click-example {
+  margin-top: 20px;
+}
+
+.keyword {
+  color: red;
+}
+.function-keyword {
+  color: red;
+}
+.function-name {
+  color: green;
+}
+.variable-declaration-keyword {
+  color: blue;
+}
