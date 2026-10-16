@@ -161,6 +161,7 @@ function parseJavaScript(text) {
           term = ""
           index += 1
         } else {
+          term += templateVariable
           term += c
           index += 1
         }
