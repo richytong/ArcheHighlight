@@ -23,8 +23,8 @@ function testOperator(term) {
   return term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "+=" || term == "++" || term == "-=" || term == "*=" || term == "/=" || term == "**=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<" || term == "&=" || term == "|=" || term == "^="
 }
 
-// pushWordTerm(parsedElements Array<object|string>, term string) -> ()
-function pushWordTerm(parsedElements, term) {
+// pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
+function pushWordTerm(parsedElements, term, index, text) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
     parsedElements.push(Span({ class: "global-object" }, term))
   } else if (term == "undefined") {
@@ -36,8 +36,21 @@ function pushWordTerm(parsedElements, term) {
   } else if (term == "NaN") {
     parsedElements.push(Span({ class: "not-a-number" }, term))
   } else {
-    parsedElements.push(term)
+    const spaces = []
+    let c = text[index]
+    while (c === " " || c === "\n") {
+      spaces.push(c)
+      index += 1
+      c = text[index]
+    }
+    if (c === "(") {
+      parsedElements.push(Span({ class: "function-name" }, term))
+    } else {
+      parsedElements.push(term)
+    }
+    parsedElements.push(...spaces)
   }
+  return index
 }
 
 function parseJavaScript(text) {
@@ -242,7 +255,12 @@ function parseJavaScript(text) {
       }
       else {
         if (term.length > 0) {
-          pushWordTerm(parsedElements, term, index, text)
+          index = pushWordTerm(parsedElements, term, index, text)
+          c = text[index]
+          if (c !== " " && c !== "\n") {
+            term = ""
+            continue
+          }
         }
         parsedElements.push(c)
         term = ""
