@@ -268,6 +268,9 @@ function parseJavaScript(text) {
       }
       term = ""
     } else if (c === "(") {
+      if (isFunctionDeclaration) {
+        isFunctionDeclaration = false
+      }
       if (term === "") {
         // skip
       } else if (term == "require" || term == "isNaN") {

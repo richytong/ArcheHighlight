@@ -1785,7 +1785,6 @@ if (x === 1) {
 }
   `
   const parsedElements = ArcheHighlight.parseJavaScript(code)
-  console.log(parsedElements)
   assert.deepEqual(parsedElements, [
     '\n',
     '<span class="variable-declaration-keyword">const</span>',
@@ -1815,6 +1814,41 @@ if (x === 1) {
   ])
 }
 
+async function test21() {
+  const code = `
+async function () {
+  const x = 1
+}
+  `
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '\n',
+    '<span class="keyword">async</span>',
+    ' ',
+    '<span class="function-keyword">function</span>',
+    ' ',
+    '(',
+    ')',
+    ' ',
+    '{',
+    '\n',
+    ' ',
+    ' ',
+    '<span class="variable-declaration-keyword">const</span>',
+    ' ',
+    'x',
+    ' ',
+    '<span class="operator">=</span>',
+    ' ',
+    '<span class="number">1</span>',
+    '\n',
+    '}',
+    '\n',
+    ' ',
+    ' '
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1839,5 +1873,6 @@ setImmediate(async () => {
   await test18()
   await test19()
   await test20()
+  await test21()
   console.log("success")
 })
