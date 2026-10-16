@@ -1595,6 +1595,17 @@ f
 
 }
 
+async function test9() {
+  const code = `// new nginx service is deploying to the docker swarm`
+
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+
+  assert.deepEqual(parsedElements, [
+    '<span class="comment">// new nginx service is deploying to the docker swarm</span>',
+  ])
+
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1604,5 +1615,6 @@ setImmediate(async () => {
   await test6()
   await test7()
   await test8()
+  await test9()
   console.log("success")
 })
