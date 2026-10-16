@@ -1656,6 +1656,30 @@ async function test12() {
   ])
 }
 
+async function test120() {
+  const code = "200n"
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="bigint">200n</span>',
+  ])
+}
+
+async function test121() {
+  const code = "200n100"
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '200n100',
+  ])
+}
+
+async function test122() {
+  const code = "200"
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="number">200</span>',
+  ])
+}
+
 async function test13() {
   const code = `\`$ $\{x\}\``
   const parsedElements = ArcheHighlight.parseJavaScript(code)
@@ -1716,6 +1740,9 @@ setImmediate(async () => {
   await test10()
   await test11()
   await test12()
+  await test120()
+  await test121()
+  await test122()
   await test13()
   await test14()
   await test15()
