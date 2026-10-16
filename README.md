@@ -70,19 +70,19 @@ The following JavaScript classes are added to the code as `span` elements of the
   * `string` - strings, for example `"a"`, `'a'`, `"This is a string."`
   * `template-literal` - template literals, for example `` `This is a${x} ${y} literal` ``
   * `template-variable` - variables in template literals, for example the `${x}` and `${y}` in the template literal above.
-  * `bigint` - JavaScript BigInts, for example `2n`.
+  * `bigint` - JavaScript BigInts, for example `2n`
   * `variable-declaration-keyword` - `var`, `const`, `let`
   * `keyword` - `import`, `new`, `async`, `await`, `for`, `while`, `of`
   * `function-keyword` - the `function` keyword for function declarations, for example `function f() {}`
   * `arrow-function-operator` - the arrow function operator `=>` for arrow function declarations, for example `const fn = () => {}`
   * `function-name` - the name of a function, either in a function declaration or as the function of a function call, for example in `function f() {}`, `f` would have a `function-name` class, and in `add(1, 2)`, `add` would have a `function-name` class.
-  * `operator` - the JavaScript operators `+`, `-`, `*`, `/`, `**`, `=`, `+=`, `++`, `-=`, `*=`, `/=`, `**=`, `==`, `===`, `!=`, `!==`, `>`, `>=`, `<`, `<=`, `?`, `:`, `&&`, `||`, `??`, `&`, `|`, `^`, `~`, `>>`, `<<`, `&=`, `|=`, and `^=`.
+  * `operator` - the JavaScript operators `+`, `-`, `*`, `/`, `**`, `=`, `+=`, `++`, `-=`, `*=`, `/=`, `**=`, `==`, `===`, `!=`, `!==`, `>`, `>=`, `<`, `<=`, `?`, `:`, `&&`, `||`, `??`, `&`, `|`, `^`, `~`, `>>`, `<<`, `&=`, `|=`, and `^=`
 
-  * `object-colon` - the colons (`:`) separating keys from values in JavaScript objects.
-  * `property-accessor` - the property access operator or dot operator (`.`), for example `Array.from`.
-  * `spread-operator` - the JavaScript spread operator (`...`).
+  * `object-colon` - the colons (`:`) separating keys from values in JavaScript objects
+  * `property-accessor` - the property access operator or dot operator (`.`), for example `Array.from`
+  * `spread-operator` - the JavaScript spread operator (`...`)
   * `global-object` - global objects and functions: `process`, `require`, `console`, `window`, `global`, `globalThis`, `isNaN`
   * `undefined` - the `undefined` value
   * `null` - the `null` object
   * `boolean` - booleans `true` and `false`
-  * `not-a-number` - the special numeric value `NaN` that represents an undefined or unrepresentable number, for example `0 / 0`.
+  * `not-a-number` - the special numeric value `NaN` that represents an undefined or unrepresentable number, for example `0 / 0`
