@@ -41,6 +41,7 @@ function parseJavaScript(text) {
 
   let index = 0
   let term = ""
+  let isShebangInterpreterDirective = false
   let isSingleLineComment = false
   let isMultiLineComment = false
   let isNumber = false
@@ -54,7 +55,11 @@ function parseJavaScript(text) {
   while (index < text.length) {
     let c = text[index]
 
-    if (isSingleLineComment && c === "\n") {
+    if (isShebangInterpreterDirective && c === "\n") {
+      isShebangInterpreterDirective = false
+      parsedElements.push(Span({ class: "shebang-interpreter-directive" }, term))
+      term = ""
+    } else if (isSingleLineComment && c === "\n") {
       isSingleLineComment = false
       parsedElements.push(Span({ class: "comment" }, term))
       term = ""
@@ -120,7 +125,10 @@ function parseJavaScript(text) {
       break
     }
 
-    if (isSingleLineComment) {
+    if (isShebangInterpreterDirective) {
+      term += c
+      index += 1
+    } else if (isSingleLineComment) {
       term += c
       index += 1
     } else if (isMultiLineComment) {
@@ -163,6 +171,10 @@ function parseJavaScript(text) {
         term += c
         index += 1
       }
+    } else if (c === "#" && text[index + 1] === "!") {
+      isShebangInterpreterDirective = true
+      term += c
+      index += 1
     } else if (c === "/" && text[index + 1] === "/") {
       isSingleLineComment = true
       term += c
@@ -320,6 +332,8 @@ function parseJavaScript(text) {
   if (term.length > 0) {
     if (isSingleLineComment) {
       parsedElements.push(Span({ class: "comment" }, term))
+    } else if (isShebangInterpreterDirective) {
+      parsedElements.push(Span({ class: "shebang-interpreter-directive" }, term))
     } else if (isNumber) {
       if (term[term.length - 1] === "n") {
         parsedElements.push(Span({ class: "bigint" }, term))
