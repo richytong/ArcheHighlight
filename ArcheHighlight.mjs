@@ -17,8 +17,8 @@ function testOperator(term) {
   return term == "+" || term == "-" || term == "*" || term == "/" || term == "**" || term == "=" || term == "+=" || term == "++" || term == "-=" || term == "*=" || term == "/=" || term == "**=" || term == "==" || term == "===" || term == "!=" || term == "!==" || term == ">" || term == ">=" || term == "<" || term == "<=" || term == "?" || term == ":" || term == "&&" || term == "||" || term == "??" || term == "&" || term == "|" || term == "^" || term == "~" || term == ">>" || term == "<<" || term == "&=" || term == "|=" || term == "^="
 }
 
-// pushWordTerm(parsedElements Array<object|string>, term string, index number, text string) -> ()
-function pushWordTerm(parsedElements, term, index, text) {
+// pushWordTerm(parsedElements Array<object|string>, term string) -> ()
+function pushWordTerm(parsedElements, term) {
   if (term == "process" || term == "require" || term == "console" || term == "window" || term == "global" || term == "globalThis" || term == "isNaN") {
     parsedElements.push(Span({ class: "global-object" }, term))
   } else if (term == "undefined") {
@@ -30,16 +30,7 @@ function pushWordTerm(parsedElements, term, index, text) {
   } else if (term == "NaN") {
     parsedElements.push(Span({ class: "not-a-number" }, term))
   } else {
-    let c = text[index]
-    while (c === " " || c === "\n") {
-      index += 1
-      c = text[index]
-    }
-    if (c === "(") {
-      parsedElements.push(Span({ class: "function-name" }, term))
-    } else {
-      parsedElements.push(term)
-    }
+    parsedElements.push(term)
   }
 }
 
