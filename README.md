@@ -78,9 +78,9 @@ The following JavaScript classes are added to the code as `span` elements of the
   * `function-name` - the name of a function, either in a function declaration or as the function of a function call, for example in `function f() {}`, `f` would have a `function-name` class, and in `add(1, 2)`, `add` would have a `function-name` class.
   * `operator` - the JavaScript operators `+`, `-`, `*`, `/`, `**`, `=`, `+=`, `++`, `-=`, `*=`, `/=`, `**=`, `==`, `===`, `!=`, `!==`, `>`, `>=`, `<`, `<=`, `?`, `:`, `&&`, `||`, `??`, `&`, `|`, `^`, `~`, `>>`, `<<`, `&=`, `|=`, and `^=`.
 
-  * `object-colon`
-  * `property-accessor`
-  * `spread-operator`
+  * `object-colon` - the colons (`:`) separating keys from values in JavaScript objects.
+  * `property-accessor` - the property access operator or dot operator (`.`), for example `Array.from`.
+  * `spread-operator` - the JavaScript spread operator (`...`).
   * `global-object` - global objects and functions: `process`, `require`, `console`, `window`, `global`, `globalThis`, `isNaN`
   * `undefined` - the `undefined` value
   * `null` - the `null` object
