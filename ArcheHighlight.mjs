@@ -337,7 +337,11 @@ function parseJavaScript(text) {
   }
 
   if (term.length > 0) {
-    pushWordTerm(parsedElements, term, index, text)
+    if (isSingleLineComment) {
+      parsedElements.push(Span({ class: "comment" }, term))
+    } else {
+      pushWordTerm(parsedElements, term, index, text)
+    }
   }
 
   return parsedElements
