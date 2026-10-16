@@ -296,7 +296,7 @@ function parseJavaScript(text) {
         parsedElements.push(Span({ class: "function-name" }, term))
         isFunctionDeclaration = false
       }
-      parsedElements.push(Span({ class: "opening-parentheses" }, c))
+      parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === ",") {
@@ -310,7 +310,7 @@ function parseJavaScript(text) {
       if (term.length > 0) {
         pushWordTerm(parsedElements, term, index, text)
       }
-      parsedElements.push(Span({ class: "closing-parentheses" }, c))
+      parsedElements.push(c)
       term = ""
       index += 1
     } else if (c === "{") {
