@@ -1849,6 +1849,32 @@ async function () {
   ])
 }
 
+async function test22() {
+  const code = `
+try {
+} catch (error) {
+}
+  `.trim()
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="keyword">try</span>',
+    ' ',
+    '{',
+    '\n',
+    '}',
+    ' ',
+    '<span class="keyword">catch</span>',
+    ' ',
+    '(',
+    'error',
+    ')',
+    ' ',
+    '{',
+    '\n',
+    '}'
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1874,5 +1900,6 @@ setImmediate(async () => {
   await test19()
   await test20()
   await test21()
+  await test22()
   console.log("success")
 })
