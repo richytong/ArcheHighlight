@@ -43,7 +43,7 @@ ArcheHighlight.parseJavaScript(code)
 ```
 
 ## React Element or HTML
-ArcheHighlight requires a special `Span` function to exist globally on the `globalThis` object on the server or on the `window` object in browsers. The global `Span` function can be from `ReactElement`, which is created from `Arche` and `React`.
+ArcheHighlight requires a special `Span` function to exist globally on the server `globalThis` object or on the client `window` object. The global `Span` function can be from `ReactElement`, which is created from `Arche` and `React`.
 ```
 const ReactElement = Arche(React)
 window.Span = ReactElement.Span
