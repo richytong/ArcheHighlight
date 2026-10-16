@@ -1676,6 +1676,22 @@ async function test14() {
   ])
 }
 
+async function test15() {
+  const code = 'const {x} = obj'
+  const parsedElements = ArcheHighlight.parseJavaScript(code)
+  assert.deepEqual(parsedElements, [
+    '<span class="variable-declaration-keyword">const</span>',
+    ' ',
+    "{",
+    "x",
+    "}",
+    ' ',
+    '<span class="operator">=</span>',
+    ' ',
+    'obj',
+  ])
+}
+
 setImmediate(async () => {
   await test1()
   await test2()
@@ -1691,5 +1707,6 @@ setImmediate(async () => {
   await test12()
   await test13()
   await test14()
+  await test15()
   console.log("success")
 })
