@@ -1,6 +1,14 @@
 # ArcheHighlight
 Syntax highlighting for [vanilla microfrontends](https://arche.gallery/). Converts JavaScript code into a React Element or HTML.
 
+Source code: [GitHub](https://github.com/richytong/ArcheHighlight) |
+License: [CFOSS](https://cloutsworld.com/en-us/legal/license/cfoss)
+
+![Node.js CI](https://github.com/richytong/ArcheHighlight/workflows/Node.js%20CI/badge.svg)
+[![codecov](https://codecov.io/gh/richytong/ArcheHighlight/branch/master/graph/badge.svg)](https://codecov.io/gh/richytong/ArcheHighlight)
+[![npm version](https://img.shields.io/npm/v/ArcheHighlight.svg?style=flat)](https://www.npmjs.com/package/ArcheHighlight)
+
+
 ```javascript
 const ReactElement = Arche(React)
 window.Span = ReactElement.Span
